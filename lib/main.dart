@@ -54,6 +54,7 @@ class RandomWordsState extends State<RandomWords> {
             appBar: AppBar(
               title: Text('Saved Suggestions'),
             ),
+            body: ListView(children: divided),
           );
         },
       ),
