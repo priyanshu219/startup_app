@@ -4,23 +4,92 @@ import 'package:english_words/english_words.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  @override
+  // @override
   Widget build(BuildContext context) {
-    final wordPair = WordPair.random();
+  //   final wordPair = WordPair.random();
     return MaterialApp(
-      title: 'Welcome to flutter',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Welcome to Flutter'),
-        ),
-        body:  Center(
-          child: Text(wordPair.asPascalCase),
-        ),
-      ),
+      // title: 'Welcome to flutter',
+      // home: Scaffold(
+      //   appBar: AppBar(
+      //     title: const Text('Welcome to Flutter'),
+      //   ),
+      //   body:  Center(
+      //     // child: Text(wordPair.asPascalCase),
+      //     child: RandomWords(),
+      //   ),
+      // ),
+      title: 'Startup Name',
+      home: RandomWords(),
     );
   }
 }
 
 class RandomWordsState extends State<RandomWords> {
-  
+  final List<WordPair> _suggestions = <WordPair>[];
+  final TextStyle _biggerFont = const TextStyle(fontSize: 18);
+  final Set<WordPair> _saved = Set<WordPair>();
+  @override
+
+  void _pushSaved(){
+    
+  }
+
+  Widget build(BuildContext context) {
+    // final wordPair = WordPair.random();
+    // return Text(wordPair.asPascalCase);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Startup name Generator'),
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.list), onPressed: _pushSaved),
+        ],
+      ),
+      body: _buildSuggestions(),
+    );
+  }
+
+Widget _buildRow(WordPair pair){
+  final bool alreadySaved = _saved.contains(pair);
+  return ListTile(
+    title: Text(
+      pair .asPascalCase,
+      style: _biggerFont,
+    ),
+    trailing: Icon(
+      alreadySaved ? Icons.favorite : Icons.favorite_border,
+      color: alreadySaved ? Colors.red : null,
+    ),
+    onTap: (){
+      setState(() {
+        if(alreadySaved){
+          _saved.remove(pair);
+        }
+        else{
+          _saved.add(pair);
+        }
+      });
+    },
+  );
+}
+
+  Widget _buildSuggestions(){
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemBuilder: (BuildContext _context, int i){
+        if(i.isEven){
+          return Divider();
+        }
+        final int index = i ~/ 2;
+        if(index >= _suggestions.length){
+          _suggestions.addAll(generateWordPairs().take(10));
+        }
+        return _buildRow(_suggestions[index]);
+      }
+    );
+  }
+}
+
+class RandomWords extends StatefulWidget {
+  @override
+  RandomWordsState createState() => RandomWordsState();
 }
