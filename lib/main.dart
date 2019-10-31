@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       //   ),
       // ),
       theme: ThemeData(
-        primaryColor: Colors.white,
+        primaryColor: Colors.blue,
       ),
       title: 'Startup Name',
       home: RandomWords(),
